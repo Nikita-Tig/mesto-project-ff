@@ -17,7 +17,6 @@ function addCard(link, name, functionFindDeleteButton) {
   cardItem.querySelector(".card__image").src = link;
   cardItem.querySelector(".card__image").alt = name;
   cardItem.querySelector(".card__title").textContent = name;
-  i = i + 1;
 
   cardContainer.append(cardItem);
   functionFindDeleteButton(cardItem);
@@ -36,4 +35,5 @@ function findDeleteButton(cardItem) {
 // Вывести карточки на страницу
 initialCards.forEach(() => {
   addCard(cardsLinks[i], cardsNames[i], findDeleteButton);
+  i = i + 1;
 });
