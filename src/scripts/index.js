@@ -62,7 +62,7 @@ function handleCardFormSubmit(evt) {
 formAddCard.addEventListener("submit", handleCardFormSubmit);
 
 // Функция открытия попапа карточки
-export function openCardImage (link, name) {
+export function openCardImage(link, name) {
   const cardImagePopup = document.querySelector(".popup_type_image");
   const popupImage = cardImagePopup.querySelector(".popup__image");
   const popupText = cardImagePopup.querySelector(".popup__caption");
@@ -70,4 +70,4 @@ export function openCardImage (link, name) {
   popupImage.alt = name;
   popupText.textContent = name;
   openModal(cardImagePopup);
-};
+}

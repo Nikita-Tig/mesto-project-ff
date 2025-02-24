@@ -2,7 +2,6 @@ const handleEscKeyUp = (e) => {
   if (e.key === "Escape") {
     const popup = document.querySelector(".popup_is-opened"); // находим открытый попап
     closeModal(popup);
-    console.log("ggg");
   }
 };
 

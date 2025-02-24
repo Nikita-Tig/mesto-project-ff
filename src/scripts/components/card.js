@@ -53,7 +53,7 @@ initialCards.forEach((initialCards) => {
       initialCards.name,
       deleteCard,
       likeCard,
-      openCardImage,
+      openCardImage
     )
   );
 });
