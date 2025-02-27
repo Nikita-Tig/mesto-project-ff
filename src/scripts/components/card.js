@@ -1,7 +1,3 @@
-import initialCards from "./cards.js";
-import { openCardImage } from "../index.js";
-
-export const cardContainer = document.querySelector(".places__list");
 const cardTemplate = document.querySelector("#card-template").content;
 
 // Функция создания карточки
@@ -38,22 +34,5 @@ export function deleteCard(cardItem) {
 
 // Функция лайка карточки
 export function likeCard(cardLikeButton) {
-  if (cardLikeButton.classList.contains("card__like-button_is-active")) {
-    cardLikeButton.classList.remove("card__like-button_is-active");
-  } else {
-    cardLikeButton.classList.add("card__like-button_is-active");
-  }
+  cardLikeButton.classList.toggle('card__like-button_is-active');
 }
-
-// Вывести карточки на страницу
-initialCards.forEach((initialCards) => {
-  cardContainer.append(
-    createCard(
-      initialCards.link,
-      initialCards.name,
-      deleteCard,
-      likeCard,
-      openCardImage
-    )
-  );
-});
