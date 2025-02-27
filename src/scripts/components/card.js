@@ -34,5 +34,5 @@ export function deleteCard(cardItem) {
 
 // Функция лайка карточки
 export function likeCard(cardLikeButton) {
-  cardLikeButton.classList.toggle('card__like-button_is-active');
+  cardLikeButton.classList.toggle("card__like-button_is-active");
 }

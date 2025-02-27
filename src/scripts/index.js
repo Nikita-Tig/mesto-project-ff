@@ -4,12 +4,12 @@ import "./components/modal.js";
 import "../pages/index.css";
 
 import initialCards from "./components/cards.js";
-import { openModal, closeModal, closePopupHandler } from "./components/modal.js";
 import {
-  createCard,
-  deleteCard,
-  likeCard,
-} from "./components/card.js";
+  openModal,
+  closeModal,
+  closePopupHandler,
+} from "./components/modal.js";
+import { createCard, deleteCard, likeCard } from "./components/card.js";
 
 const editProfileButton = document.querySelector(".profile__edit-button");
 const addCardButton = document.querySelector(".profile__add-button");
@@ -20,7 +20,9 @@ const newCardPopup = document.querySelector(".popup_type_new-card");
 // Форма для редоктирования профиля
 const formEditProfile = document.querySelector(".popup_type_edit .popup__form");
 const nameInput = formEditProfile.querySelector(".popup__input_type_name");
-const jobInput = formEditProfile.querySelector(".popup__input_type_description");
+const jobInput = formEditProfile.querySelector(
+  ".popup__input_type_description"
+);
 const profileName = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 
@@ -93,5 +95,5 @@ export function openCardImage(link, name) {
 
 const popup = document.querySelectorAll(".popup");
 popup.forEach((popup) => {
-  closePopupHandler(popup)
+  closePopupHandler(popup);
 });
