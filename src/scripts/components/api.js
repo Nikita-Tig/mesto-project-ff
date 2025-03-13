@@ -33,7 +33,17 @@ export const getUserInfo = () => {
 };
 
 //отправка новой карточки
-export const uploadNewCard = (cardLink, cardName, cardContainer, popupButton, createCard, userId, cardFunctions, closeModal, popup) => {
+export const uploadNewCard = (
+  cardLink,
+  cardName,
+  cardContainer,
+  popupButton,
+  createCard,
+  userId,
+  cardFunctions,
+  closeModal,
+  popup
+) => {
   fetch(`${apiConfig.baseUrl}/cards`, {
     method: "POST",
     headers: apiConfig.headers,
@@ -41,23 +51,34 @@ export const uploadNewCard = (cardLink, cardName, cardContainer, popupButton, cr
       link: cardLink,
       name: cardName,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      popupButton.textContent = "Сохранение...";
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  }).then((res) => {
-    cardContainer.prepend(createCard(userId, res, cardFunctions));
-  }).catch((err) => {
-    console.log(err);
-  }).finally(() => {
-    closeModal(popup)
   })
+    .then((res) => {
+      if (res.ok) {
+        popupButton.textContent = "Сохранение...";
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    })
+    .then((res) => {
+      cardContainer.prepend(createCard(userId, res, cardFunctions));
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      closeModal(popup);
+    });
 };
 
 // отправка имени и описания пользователя
-export const uploadUserInfo = (userName, userDescription, popupButton, updateUserInfo, closeModal, popup) => {
+export const uploadUserInfo = (
+  userName,
+  userDescription,
+  popupButton,
+  updateUserInfo,
+  closeModal,
+  popup
+) => {
   fetch(`${apiConfig.baseUrl}/users/me`, {
     method: "PATCH",
     headers: apiConfig.headers,
@@ -65,41 +86,55 @@ export const uploadUserInfo = (userName, userDescription, popupButton, updateUse
       name: userName,
       about: userDescription,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      popupButton.textContent = "Сохранение...";
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  }).then(() => {
-    updateUserInfo()
-  }).catch((err) => {
-    console.log(err);
-  }).finally(() => {
-    closeModal(popup)
   })
+    .then((res) => {
+      if (res.ok) {
+        popupButton.textContent = "Сохранение...";
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    })
+    .then(() => {
+      updateUserInfo();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      closeModal(popup);
+    });
 };
 
-export const uploadUserAvatar = (userAvatar, popupButton, updateUserAvatar, closeModal, popup) => {
+export const uploadUserAvatar = (
+  userAvatar,
+  popupButton,
+  updateUserAvatar,
+  closeModal,
+  popup
+) => {
   fetch(`${apiConfig.baseUrl}/users/me/avatar`, {
     method: "PATCH",
     headers: apiConfig.headers,
     body: JSON.stringify({
       avatar: userAvatar,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      popupButton.textContent = "Сохранение...";
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  }).then(() => {
-    updateUserAvatar()
-  }).catch((err) => {
-    console.log(err);
-  }).finally(() => {
-    closeModal(popup)
   })
+    .then((res) => {
+      if (res.ok) {
+        popupButton.textContent = "Сохранение...";
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    })
+    .then(() => {
+      updateUserAvatar();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      closeModal(popup);
+    });
 };
 
 // удаление карточки с сервера
@@ -113,31 +148,30 @@ export const deleteCardApi = (deletingCardId) => {
     }
     return Promise.reject(`Ошибка: ${res.status}`);
   });
-}
+};
 
 // отправка лайка
 export const likeApi = (likeCardId) => {
   return fetch(`${apiConfig.baseUrl}/cards/likes/${likeCardId}`, {
     method: "PUT",
-    headers: apiConfig.headers
+    headers: apiConfig.headers,
   }).then((res) => {
     if (res.ok) {
       return res.json();
     }
     return Promise.reject(`Ошибка: ${res.status}`);
-  })
-}
+  });
+};
 
 // снятие лайка
 export const unlikeApi = (unlikeCardId) => {
   return fetch(`${apiConfig.baseUrl}/cards/likes/${unlikeCardId}`, {
     method: "DELETE",
-    headers: apiConfig.headers
+    headers: apiConfig.headers,
   }).then((res) => {
     if (res.ok) {
       return res.json();
     }
     return Promise.reject(`Ошибка: ${res.status}`);
-  })
-}
-
+  });
+};
