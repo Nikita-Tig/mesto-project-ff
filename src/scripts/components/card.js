@@ -87,6 +87,7 @@ export function likeCard(
     {
       unlikeApi(cardId)
       .then((res) => {
+        cardLikeButton.classList.toggle("card__like-button_is-active");
         cardLikeCounter.textContent = res.likes.length;
       })
       .catch((err) => {
@@ -95,12 +96,11 @@ export function likeCard(
     } else {
       likeApi(cardId)
       .then((res) => {
+        cardLikeButton.classList.toggle("card__like-button_is-active");
         cardLikeCounter.textContent = res.likes.length;
       })
       .catch((err) => {
         console.log(err);
       });
     }
-
-  cardLikeButton.classList.toggle("card__like-button_is-active");
 }

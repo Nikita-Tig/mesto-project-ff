@@ -6,16 +6,20 @@ const apiConfig = {
   },
 };
 
+const checkServerStatus = (res) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+};
+
 // запрос карточек
 export const getInitialCards = () => {
   return fetch(`${apiConfig.baseUrl}/cards`, {
     method: "GET",
     headers: apiConfig.headers,
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return checkServerStatus(res);
   });
 };
 
@@ -25,116 +29,48 @@ export const getUserInfo = () => {
     method: "GET",
     headers: apiConfig.headers,
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return checkServerStatus(res);
   });
 };
 
 //отправка новой карточки
-export const uploadNewCard = (
-  cardLink,
-  cardName,
-  cardContainer,
-  popupButton,
-  createCard,
-  userId,
-  cardFunctions,
-  closeModal,
-  popup
-) => {
-  fetch(`${apiConfig.baseUrl}/cards`, {
+export const uploadNewCard = (cardLink, cardName) => {
+  return fetch(`${apiConfig.baseUrl}/cards`, {
     method: "POST",
     headers: apiConfig.headers,
     body: JSON.stringify({
       link: cardLink,
       name: cardName,
     }),
-  })
-    .then((res) => {
-      if (res.ok) {
-        popupButton.textContent = "Сохранение...";
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((res) => {
-      cardContainer.prepend(createCard(userId, res, cardFunctions));
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      closeModal(popup);
-    });
+  }).then((res) => {
+    return checkServerStatus(res);
+  });
 };
 
 // отправка имени и описания пользователя
-export const uploadUserInfo = (
-  userName,
-  userDescription,
-  popupButton,
-  updateUserInfo,
-  closeModal,
-  popup
-) => {
-  fetch(`${apiConfig.baseUrl}/users/me`, {
+export const uploadUserInfo = (userName, userDescription) => {
+  return fetch(`${apiConfig.baseUrl}/users/me`, {
     method: "PATCH",
     headers: apiConfig.headers,
     body: JSON.stringify({
       name: userName,
       about: userDescription,
     }),
-  })
-    .then((res) => {
-      if (res.ok) {
-        popupButton.textContent = "Сохранение...";
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then(() => {
-      updateUserInfo();
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      closeModal(popup);
-    });
+  }).then((res) => {
+    return checkServerStatus(res);
+  });
 };
 
-export const uploadUserAvatar = (
-  userAvatar,
-  popupButton,
-  updateUserAvatar,
-  closeModal,
-  popup
-) => {
-  fetch(`${apiConfig.baseUrl}/users/me/avatar`, {
+export const uploadUserAvatar = (userAvatar) => {
+  return fetch(`${apiConfig.baseUrl}/users/me/avatar`, {
     method: "PATCH",
     headers: apiConfig.headers,
     body: JSON.stringify({
       avatar: userAvatar,
     }),
-  })
-    .then((res) => {
-      if (res.ok) {
-        popupButton.textContent = "Сохранение...";
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then(() => {
-      updateUserAvatar();
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      closeModal(popup);
-    });
+  }).then((res) => {
+    return checkServerStatus(res);
+  });
 };
 
 // удаление карточки с сервера
@@ -143,10 +79,7 @@ export const deleteCardApi = (deletingCardId) => {
     method: "DELETE",
     headers: apiConfig.headers,
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return checkServerStatus(res);
   });
 };
 
@@ -156,10 +89,7 @@ export const likeApi = (likeCardId) => {
     method: "PUT",
     headers: apiConfig.headers,
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return checkServerStatus(res);
   });
 };
 
@@ -169,9 +99,6 @@ export const unlikeApi = (unlikeCardId) => {
     method: "DELETE",
     headers: apiConfig.headers,
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return checkServerStatus(res);
   });
 };

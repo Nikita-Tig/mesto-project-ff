@@ -100,12 +100,14 @@ export const enableValidation = ({ formSelector, ...validationConfig }) => {
 
 export const clearValidation = (
   formElement,
-  { inputSelector, ...validationConfig }
+  { inputSelector, submitButtonSelector, ...validationConfig }
 ) => {
   const inputList = Array.from(
     formElement.querySelectorAll(`${inputSelector}`)
   );
+  const buttonElement = formElement.querySelector(`${submitButtonSelector}`);
   inputList.forEach((inputElement) => {
     hideInputError(formElement, inputElement, validationConfig);
+    toggleButtonState(inputList, buttonElement, validationConfig)
   });
 };

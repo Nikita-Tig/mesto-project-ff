@@ -61,19 +61,8 @@ const jobInput = formEditProfile.querySelector(
 const profileName = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 
-// запрос и загрузка данных пользователя
+// обновление данных пользователя
 let userId = null;
-getUserInfo()
-  .then((res) => {
-    profileName.textContent = res.name;
-    profileDescription.textContent = res.about;
-    profileImage.style.backgroundImage = `URL(${res.avatar})`;
-    userId = res._id;
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
 const updateUserInfo = () => {
   getUserInfo()
     .then((res) => {
@@ -103,20 +92,24 @@ const avatarPopupButton = formEditAvatar.querySelector(".popup__button");
 editAvatarButton.addEventListener("click", function () {
   avatarPopupButton.textContent = "Сохранить";
   openModal(editAvatarPopup);
+  clearValidation(formEditAvatar, validationConfig);
 });
 
 function handleAvatarFormSubmit(evt) {
   const avatarUrl = avatarUrlInput.value;
   evt.preventDefault();
-  uploadUserAvatar(
-    avatarUrl,
-    avatarPopupButton,
-    updateUserAvatar,
-    closeModal,
-    editAvatarPopup
-  );
+  uploadUserAvatar(avatarUrl)
+    .then(() => {
+      avatarPopupButton.textContent = "Сохранение...";
+      updateUserAvatar();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .then(() => {
+      closeModal(editAvatarPopup);
+    });
   formEditAvatar.reset();
-  clearValidation(formEditAvatar, validationConfig);
 }
 formEditAvatar.addEventListener("submit", handleAvatarFormSubmit);
 
@@ -136,14 +129,17 @@ function handleProfileForm() {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  uploadUserInfo(
-    nameInput.value,
-    jobInput.value,
-    profilePopupButton,
-    updateUserInfo,
-    closeModal,
-    editProfilePopup
-  );
+  uploadUserInfo(nameInput.value, jobInput.value)
+    .then(() => {
+      profilePopupButton.textContent = "Сохранение...";
+      updateUserInfo()
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .then(() => {
+      closeModal(editProfilePopup);
+    });
 }
 formEditProfile.addEventListener("submit", handleProfileFormSubmit);
 
@@ -157,25 +153,25 @@ const cardPopupButton = formAddCard.querySelector(".popup__button");
 addCardButton.addEventListener("click", function () {
   cardPopupButton.textContent = "Сохранить";
   openModal(newCardPopup);
+  clearValidation(formAddCard, validationConfig);
 });
 
 function handleCardFormSubmit(evt) {
   const cardUrl = cardUrlInput.value;
   const cardName = cardNameInput.value;
   evt.preventDefault();
-  uploadNewCard(
-    cardUrl,
-    cardName,
-    cardContainer,
-    cardPopupButton,
-    createCard,
-    userId,
-    cardFunctions,
-    closeModal,
-    newCardPopup
-  );
+  uploadNewCard(cardUrl, cardName)
+    .then((res) => {
+      cardContainer.prepend(createCard(userId, res, cardFunctions));
+      cardPopupButton.textContent = "Сохранение...";
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .then(() => {
+      closeModal(newCardPopup);
+    });
   formAddCard.reset();
-  clearValidation(formAddCard, validationConfig);
 }
 formAddCard.addEventListener("submit", handleCardFormSubmit);
 
@@ -199,6 +195,10 @@ popup.forEach((popup) => {
 Promise.all([getInitialCards(), getUserInfo()])
   .then(([cards, user]) => {
     if ([cards.ok && user.ok]) {
+      profileName.textContent = user.name;
+      profileDescription.textContent = user.about;
+      profileImage.style.backgroundImage = `URL(${user.avatar})`;
+      userId = user._id;
 
       // Вывести карточки на страницу
       cards.forEach((card) => {
