@@ -31,6 +31,7 @@ import {
   validationConfig,
 } from "./components/validation.js";
 
+let userId = null;
 const cardFunctions = {
   deleteCard,
   likeCard,
@@ -61,29 +62,6 @@ const jobInput = formEditProfile.querySelector(
 const profileName = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 
-// обновление данных пользователя
-let userId = null;
-const updateUserInfo = () => {
-  getUserInfo()
-    .then((res) => {
-      profileName.textContent = res.name;
-      profileDescription.textContent = res.about;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-const updateUserAvatar = () => {
-  getUserInfo()
-    .then((res) => {
-      profileImage.style.backgroundImage = `URL(${res.avatar})`;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
 // Форма для обновления аватара
 const formEditAvatar = document.querySelector("[name='edit-avatar']");
 const avatarUrlInput = formEditAvatar.querySelector(".popup__input_type_url");
@@ -99,9 +77,9 @@ function handleAvatarFormSubmit(evt) {
   const avatarUrl = avatarUrlInput.value;
   evt.preventDefault();
   uploadUserAvatar(avatarUrl)
-    .then(() => {
+    .then((res) => {
       avatarPopupButton.textContent = "Сохранение...";
-      updateUserAvatar();
+      profileImage.style.backgroundImage = `URL(${res.avatar})`;
     })
     .catch((err) => {
       console.log(err);
@@ -130,9 +108,10 @@ function handleProfileForm() {
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   uploadUserInfo(nameInput.value, jobInput.value)
-    .then(() => {
+    .then((res) => {
       profilePopupButton.textContent = "Сохранение...";
-      updateUserInfo()
+      profileName.textContent = res.name;
+      profileDescription.textContent = res.about;
     })
     .catch((err) => {
       console.log(err);
